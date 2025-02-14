@@ -21,6 +21,6 @@ class HomeController
 
     public function index()
     {
-        echo $this->template->renderView('home');
+        echo $this->template->renderView('home', ['title' => "Title is home"]);
     }
 }

@@ -1,1 +1,1 @@
-header
+ title : <?php echo $title ?>

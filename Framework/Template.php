@@ -11,9 +11,11 @@ class Template
 {
     public function __construct(private string $viewsDir) {}
 
-    public function renderView(string $viewPath)
+    public function renderView(string $viewPath, array $data = [])
     {
+
         $filePath = $this->getFilePath($viewPath);
+        extract($data, EXTR_OVERWRITE);
 
         if (!file_exists($filePath)) {
             throw new Exception("Resource not found!");
@@ -29,8 +31,11 @@ class Template
 
         return $output;
     }
-    public function resolve(string $viewPath)
+    public function resolve(string $viewPath, array $data)
     {
+        extract($data);
+
+
         $filePath = $this->getFilePath($viewPath);
         try {
             include $filePath;
