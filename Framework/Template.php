@@ -13,8 +13,8 @@ class Template
 
     public function renderView(string $viewPath)
     {
-        $viewPath = $this->getFilePathWithDir($viewPath);
-        $filePath = $this->viewsDir . "/$viewPath.php";
+        $filePath = $this->getFilePath($viewPath);
+
         if (!file_exists($filePath)) {
             throw new Exception("Resource not found!");
         }
@@ -29,14 +29,24 @@ class Template
 
         return $output;
     }
-
-    private function getFilePathWithDir(string $fileWithDir): string
+    public function resolve(string $viewPath)
     {
-        if (!strpos($fileWithDir, '.')) {
-            return $fileWithDir;
+        $filePath = $this->getFilePath($viewPath);
+        try {
+            include $filePath;
+        } catch (Exception $e) {
+            throw new Exception("Resource not found!");
         }
-        $viewPathArr = explode('.', $fileWithDir);
-        $viewPath = implode('/', $viewPathArr);
-        return $viewPath;
+    }
+
+    private function getFilePath(string $viewPath): string
+    {
+        if (strpos($viewPath, '.')) {
+            $viewPathArr = explode('.', $viewPath);
+            $viewPath = implode('/', $viewPathArr);
+        }
+
+        $filePath = $this->viewsDir . "/$viewPath.php";
+        return $filePath;
     }
 }
