@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 
-function dd(array|null ...$args)
+function dd(mixed ...$args)
 {
     echo "<pre >";
     var_dump(...$args);
