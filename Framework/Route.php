@@ -67,7 +67,8 @@ class Route
         return null;
     }
     /**
-     * @param array{class: string, method: string} $controller
+     * @template T of object
+     * @param array{class: class-string<T>, method: key-of<T>} $controller
      */
     public static function get(string $uri, array $controller)
     {

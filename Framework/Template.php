@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Framework;
 
 use Exception;
+use Throwable;
 
 class Template
 {
@@ -13,7 +14,6 @@ class Template
 
     public function renderView(string $viewPath, array $data = [])
     {
-
         $filePath = $this->getFilePath($viewPath);
         extract($data, EXTR_OVERWRITE);
 
@@ -23,16 +23,24 @@ class Template
 
         ob_start();
 
-        include  $filePath;
+        try {
+            include $filePath;
+            $output = ob_get_clean();
 
-        $output = ob_get_contents();
+            if ($output === false) {
+                throw new Exception("Failed to capture the output buffer.");
+            }
 
-        ob_end_clean();
-
-        return $output;
+            return $output;
+        } catch (Throwable $e) {
+            ob_end_clean(); // Ensure the buffer is cleared if an exception occurs
+            throw new Exception("An error occurred while rendering the view: " . $e->getMessage(), 0, $e);
+        }
     }
+
     public function resolve(string $viewPath, array $data)
     {
+
         extract($data);
 
 

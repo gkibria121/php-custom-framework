@@ -15,15 +15,32 @@ function dd(mixed ...$args)
 
 function e(string $text)
 {
-    echo htmlspecialchars($text);
+    return htmlspecialchars($text);
 }
 
 function config(string $name)
 {
-    try {
-        $configDir = Paths::$CONFIGDIR;
-        return include "$configDir/$name.php";
-    } catch (Exception $e) {
+    $configDir = Paths::$CONFIGDIR;
+    $filePath = "$configDir/" . strtok($name, '.') . ".php";
+
+    if (!file_exists($filePath)) {
         throw new  ConfigNotFound();
     }
+
+    $data = include $filePath;
+    $offset = strtok('.');
+    while ($offset !== false) {
+        $data = $data[$offset];
+        $offset = strtok('.');
+    }
+    return $data;
+}
+
+
+function asset(string $path)
+{
+    $protocol = config('app.protocol');
+    $serverName = config('app.host');
+
+    return "$protocol://$serverName/$path";
 }
