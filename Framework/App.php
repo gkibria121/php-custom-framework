@@ -8,15 +8,19 @@ use Framework\Route;
 
 class App
 {
+    private Container $container;
 
-    public function __construct(private  Route $router) {}
+    public function __construct(private  Route $router)
+    {
+        $this->container = new Container(config('container-definations'));
+    }
 
 
     public function run()
     {
         $uri = $_SERVER["REQUEST_URI"];
         $method = $_SERVER["REQUEST_METHOD"];
-        $this->router->dispatch($uri, $method);
+        $this->router->dispatch($uri, $method, $this->container);
     }
     public function registerRoutes(string $filepath, string $prefix = '')
     {

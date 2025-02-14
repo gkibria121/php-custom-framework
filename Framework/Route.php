@@ -8,6 +8,7 @@ namespace Framework;
 
 use Error;
 use Exception;
+use Framework\Exceptions\RouteNotFound;
 
 class Route
 {
@@ -37,7 +38,7 @@ class Route
         return $pathName;
     }
 
-    public function dispatch(string $uri, string $method)
+    public function dispatch(string $uri, string $method, Container $container = null)
     {
 
         $url = $this->normalizeUri($uri);
@@ -45,11 +46,13 @@ class Route
         $route = $this->findRoute($url, $method);
 
         if (!$route) {
-            throw new Exception("Route Not Found!");
+            throw new RouteNotFound();
         }
-        $controller = $route['controller'][0];
+        $controllerClass = $route['controller'][0];
+
         $controllerMethod = $route['controller'][1];
-        $controllerInstance = new $controller();
+
+        $controllerInstance = $container ? $container->resolve($controllerClass) : new $controllerClass;
         $controllerInstance->$controllerMethod();
     }
 

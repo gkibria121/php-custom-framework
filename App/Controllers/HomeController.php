@@ -13,14 +13,11 @@ use Framework\Template;
 
 class HomeController
 {
-    private Template $template;
-    public function __construct()
-    {
-        $this->template = new Template(Paths::$VIEWSDIR);
-    }
+
+    public function __construct(private Template $template) {}
 
     public function index()
     {
-        echo $this->template->renderView('home', ['title' => "Title is home"]);
+        echo $this->template->renderView('home', ['title' => "Title is<p> home</p>"]);
     }
 }

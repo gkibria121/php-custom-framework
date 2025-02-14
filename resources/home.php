@@ -1,3 +1,3 @@
 <?php $this->resolve('header', $data) ?>
 <h1>Hello Home</h1>
-Title : <?php echo $title; ?>
+Title : <?php e($title) ?>
