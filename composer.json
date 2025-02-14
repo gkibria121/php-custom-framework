@@ -1,0 +1,22 @@
+{
+    "name": "gk/php-custom-framework",
+    "description": "This is an intro to PHP MVC frameworks",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "gkibria",
+            "email": "gkibria121@gmail.com"
+        }
+    ],
+    "require": {
+        
+
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\" : "App/" ,
+            "Framework\\" : "Framework/" 
+        }
+    }
+}
