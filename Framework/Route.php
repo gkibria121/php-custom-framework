@@ -8,6 +8,8 @@ namespace Framework;
 
 use Error;
 use Exception;
+use Framework\Contracts\Middleware;
+use Framework\Exceptions\RouteException;
 use Framework\Exceptions\RouteNotFound;
 
 class Route
@@ -15,6 +17,7 @@ class Route
 
 
     private static array $routes = [];
+    private static array $middlewares = [];
 
     /**
      * @param array{class: string, method: string} $controller
@@ -26,6 +29,7 @@ class Route
             'path' => $path,
             'method' => strtoupper($method),
             'controller' => $controller,
+            'middlewares' => []
 
         ];
     }
@@ -52,8 +56,35 @@ class Route
 
         $controllerMethod = $route['controller'][1];
 
-        $controllerInstance = $container ? $container->resolve($controllerClass) : new $controllerClass;
-        $controllerInstance->$controllerMethod();
+
+
+        $controllerInstance = $this->getInstance($container, $controllerClass);
+        $action = fn() =>  $controllerInstance->$controllerMethod();
+        $middlewares  = $route['middlewares'] ?? [];
+        if (count($middlewares) == 0) {
+            $action();
+        }
+        $actionWithMiddlewares = $this->applyMiddlewares($action, $middlewares, $container);
+        $actionWithMiddlewares();
+    }
+
+    private function applyMiddlewares(callable $action, array $middlewares, Container  $container)
+    {
+
+
+
+        $middlewares = array_reverse($middlewares);
+
+        foreach ($middlewares as $middleware) {
+            $middlewareInstance = $this->getInstance($container, $middleware);
+            $action = fn() => $middlewareInstance->process($action);
+        }
+        return $action;
+    }
+
+    private function getInstance(Container $container, string $className)
+    {
+        return $container ? $container->resolve($className) : new $className;
     }
 
 
@@ -79,5 +110,15 @@ class Route
             'controller' => $controller,
 
         ];
+        return new static();
+    }
+    public static function middlewares(string | array $middlewares)
+    {
+        $lastRoute = self::$routes[count(self::$routes) - 1];
+        if (!$lastRoute) {
+            throw new RouteException("Route does not exists.");
+        }
+        self::$routes[count(self::$routes) - 1]['middlewares'] = is_array($middlewares) ? $middlewares : [$middlewares];
+        return new static();
     }
 }

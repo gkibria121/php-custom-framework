@@ -14,6 +14,7 @@ use ReflectionNamedType;
 
 class Container
 {
+    private array $resolved = [];
     public function __construct(private array $definations) {}
 
     public function resolve(string $className)
@@ -45,10 +46,10 @@ class Container
                 throw new ContainerException("Faild to resolve  $className because invalid param name.");
             }
 
-            $factory = $this->get($type->getName(), $this->definations);
+            $dependency = $this->get($type->getName(), $this->definations);
 
 
-            $dependencies[] = $factory();
+            $dependencies[] = $dependency;
         }
 
         return new $className(...$dependencies);
@@ -59,6 +60,11 @@ class Container
         if (!array_key_exists($id, $definations)) {
             throw new ContainerException("Cannot find defination for $id");
         }
-        return $definations[$id];
+        if (array_key_exists($id, $this->resolved)) {
+            return $this->resolved[$id];
+        }
+        $factory = $definations[$id]();
+        $this->resolved[$id] = $factory;
+        return $factory;
     }
 }

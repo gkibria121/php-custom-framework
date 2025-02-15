@@ -7,12 +7,17 @@ use Framework\Paths;
 
 function dd(mixed ...$args)
 {
-    echo "<pre >";
-    var_dump(...$args);
-    echo "</pre>";
+    dump(...$args);
     die();
 }
 
+function dump(mixed ...$args)
+{
+
+    echo "<pre >";
+    var_dump(...$args);
+    echo "</pre>";
+}
 function e(string $text)
 {
     return htmlspecialchars($text);
