@@ -12,3 +12,4 @@ use Framework\Route;
 
 Route::get('/', [DashboardController::class, 'index']);
 Route::get('/register', [AuthController::class, 'registerView']);
+Route::post('/register', [AuthController::class, 'register']);

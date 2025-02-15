@@ -22,17 +22,7 @@ class Route
     /**
      * @param array{class: string, method: string} $controller
      */
-    public function add(string $path, $method, array $controller)
-    {
 
-        self::$routes[] = [
-            'path' => $path,
-            'method' => strtoupper($method),
-            'controller' => $controller,
-            'middlewares' => []
-
-        ];
-    }
     private static function normalizeUri(string $uri)
     {
         $parsedUri = parse_url($uri);
@@ -98,19 +88,29 @@ class Route
         }
         return null;
     }
+    public static function add(string $path, $method, array $controller)
+    {
+        $path = self::normalizeUri($path);
+        self::$routes[] = [
+            'path' => $path,
+            'method' =>  $method,
+            'controller' => $controller,
+
+        ];
+    }
     /**
      * @template T of object
      * @param array{class: class-string<T>, method: key-of<T>} $controller
      */
     public static function get(string $uri, array $controller)
     {
-        $path = self::normalizeUri($uri);
-        self::$routes[] = [
-            'path' => $path,
-            'method' => "GET",
-            'controller' => $controller,
+        self::add($uri, "GET", $controller);
+        return new static();
+    }
 
-        ];
+    public static function post(string $uri, array $controller)
+    {
+        self::add($uri, "POST", $controller);
         return new static();
     }
     public static function middlewares(string | array $middlewares)

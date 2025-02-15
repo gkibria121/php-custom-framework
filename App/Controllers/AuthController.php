@@ -19,4 +19,8 @@ class AuthController
     {
         echo $this->template->renderView("register", ['title' => "Register"]);
     }
+    public function register()
+    {
+        dd($_POST);
+    }
 }
