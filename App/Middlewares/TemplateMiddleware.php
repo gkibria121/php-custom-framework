@@ -14,8 +14,7 @@ class TemplateMiddleware implements MiddlewareInterface
 
     public function process(callable $next)
     {
-        echo "Middlware running...";
-        dump($this->template);
+
         $next();
     }
 }

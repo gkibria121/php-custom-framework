@@ -17,6 +17,7 @@
         "psr-4": {
             "App\\" : "App/" ,
             "Framework\\" : "Framework/" 
-        }
+        },
+        "files": ["Framework/functions.php"]
     }
 }

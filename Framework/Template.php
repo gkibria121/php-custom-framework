@@ -24,7 +24,9 @@ class Template
         ob_start();
 
         try {
+
             include $filePath;
+
             $output = ob_get_clean();
 
             if ($output === false) {

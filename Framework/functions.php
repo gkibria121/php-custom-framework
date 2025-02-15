@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
+
+
 use Framework\Exceptions\ConfigNotFound;
 use Framework\Paths;
+use Framework\Template;
 
 function dd(mixed ...$args)
 {
@@ -48,4 +51,11 @@ function asset(string $path)
     $serverName = config('app.host');
 
     return "$protocol://$serverName/$path";
+}
+
+
+function notFound()
+{
+    $templateEngine = new Template(Paths::$VIEWSDIR);
+    echo $templateEngine->renderView("not-found");
 }

@@ -63,6 +63,7 @@ class Route
         $middlewares  = $route['middlewares'] ?? [];
         if (count($middlewares) == 0) {
             $action();
+            return;
         }
         $actionWithMiddlewares = $this->applyMiddlewares($action, $middlewares, $container);
         $actionWithMiddlewares();
