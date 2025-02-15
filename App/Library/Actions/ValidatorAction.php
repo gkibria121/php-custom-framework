@@ -18,15 +18,23 @@ class ValidatorAction
 
         foreach ($validationRules as $field => $rules) {
             foreach ($rules as $rule) {
+                $param = '';
+
+                if (str_contains($rule, ':')) {
+                    [$rule, $param] = explode(':', $rule);
+                };
 
                 if (!array_key_exists($rule, $this->rules)) {
                     throw new Exception("Rule $rule is not defined.");
                 }
+
                 $rulesInstance = $this->getRuleInstance($rule, $this->rules);
-                if ($rulesInstance->validate($field, $formData, [])) {
+                if ($rulesInstance->validate($field, $formData, explode(',', $param))) {
                     continue;
                 }
-                $errors[$field][] = $rulesInstance->getMessage($field, $formData, []);
+
+
+                $errors[$field][] = $rulesInstance->getMessage($field, $formData, explode(',', $param));
             }
 
             if (count($errors)) {

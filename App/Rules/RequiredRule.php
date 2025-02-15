@@ -7,7 +7,7 @@ namespace App\Rules;
 
 use App\Contracts\IRule;
 
-class Required implements IRule
+class RequiredRule implements IRule
 {
     public function validate(string $field, array $data, array $param): bool
     {
