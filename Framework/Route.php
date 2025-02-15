@@ -18,7 +18,7 @@ class Route
 
 
     private static array $routes = [];
-    private static array $middlewares = [];
+    private static array $gropuMiddlewares = [];
 
     /**
      * @param array{class: string, method: string} $controller
@@ -52,7 +52,7 @@ class Route
         $controllerInstance = $this->getInstance($container, $controllerClass);
         $action = fn() =>  $controllerInstance->$controllerMethod();
         $middlewares  = $route['middlewares'] ?? [];
-        $middlewares = [...$middlewares, ...self::$middlewares];
+
 
         if (count($middlewares) == 0) {
             $action();
@@ -65,8 +65,8 @@ class Route
     private function applyMiddlewares(callable $action, array $middlewares, Container  $container)
     {
 
-        $middlewares = array_reverse($middlewares);
 
+        $middlewares = array_reverse($middlewares);
         foreach ($middlewares as $middleware) {
             $middlewareInstance = $this->getInstance($container, $middleware);
             $action = fn() => $middlewareInstance->process($action);
@@ -96,6 +96,7 @@ class Route
             'path' => $path,
             'method' =>  $method,
             'controller' => $controller,
+            'middlewares' => self::$gropuMiddlewares
 
         ];
     }
@@ -114,21 +115,31 @@ class Route
         self::add($uri, "POST", $controller);
         return new static();
     }
-    public static function middlewares(string | array $middlewares)
+    public static function addMiddlewares(string | array $middlewares)
     {
         $lastRoute = self::$routes[count(self::$routes) - 1];
         if (!$lastRoute) {
             throw new RouteException("Route does not exists.");
         }
 
-        self::$routes[count(self::$routes) - 1]['middlewares'] = is_array($middlewares) ? $middlewares : [$middlewares];
+        $previousMiddlewares = self::$routes[count(self::$routes) - 1]['middlewares'] ?? [];
+        $middlewares = is_array($middlewares) ? [...$previousMiddlewares, ...$middlewares] : [...$previousMiddlewares, $middlewares];
+
+        self::$routes[count(self::$routes) - 1]['middlewares'] = $middlewares;
 
         return new static();
     }
 
-    public static function addMiddleware(string $middleware)
+
+    public static function group(array   $middlewares, callable $callable)
     {
-        self::$middlewares = [...self::$middlewares, $middleware];
+
+        $previousMiddleware =  self::$gropuMiddlewares;
+        self::$gropuMiddlewares = [...self::$gropuMiddlewares, ...$middlewares];
+
+        $callable();
+        self::$gropuMiddlewares = $previousMiddleware;
+
         return new static();
     }
 }
