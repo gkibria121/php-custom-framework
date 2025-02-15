@@ -9,6 +9,7 @@ namespace Framework;
 use Error;
 use Exception;
 use Framework\Contracts\Middleware;
+use Framework\Contracts\MiddlewareInterface;
 use Framework\Exceptions\RouteException;
 use Framework\Exceptions\RouteNotFound;
 
@@ -51,6 +52,8 @@ class Route
         $controllerInstance = $this->getInstance($container, $controllerClass);
         $action = fn() =>  $controllerInstance->$controllerMethod();
         $middlewares  = $route['middlewares'] ?? [];
+        $middlewares = [...$middlewares, ...self::$middlewares];
+
         if (count($middlewares) == 0) {
             $action();
             return;
@@ -61,8 +64,6 @@ class Route
 
     private function applyMiddlewares(callable $action, array $middlewares, Container  $container)
     {
-
-
 
         $middlewares = array_reverse($middlewares);
 
@@ -119,7 +120,15 @@ class Route
         if (!$lastRoute) {
             throw new RouteException("Route does not exists.");
         }
+
         self::$routes[count(self::$routes) - 1]['middlewares'] = is_array($middlewares) ? $middlewares : [$middlewares];
+
+        return new static();
+    }
+
+    public static function addMiddleware(string $middleware)
+    {
+        self::$middlewares = [...self::$middlewares, $middleware];
         return new static();
     }
 }

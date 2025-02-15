@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Library\Actions;
 
 use App\Contracts\IRule;
+use App\Exceptions\ValidationException;
 use Exception;
 
 class ValidatorAction
@@ -36,10 +37,9 @@ class ValidatorAction
 
                 $errors[$field][] = $rulesInstance->getMessage($field, $formData, explode(',', $param));
             }
-
-            if (count($errors)) {
-                dd($errors);
-            }
+        }
+        if (count($errors)) {
+            throw new ValidationException($errors);
         }
     }
     public function addRule(string $name, IRule $rule)

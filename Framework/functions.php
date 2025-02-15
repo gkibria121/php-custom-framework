@@ -59,3 +59,8 @@ function notFound()
     $templateEngine = new Template(Paths::$VIEWSDIR);
     echo $templateEngine->renderView("not-found");
 }
+function redirectTo(string $path)
+{
+    http_response_code(302);
+    header("Location: $path");
+}
