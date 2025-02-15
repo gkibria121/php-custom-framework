@@ -10,11 +10,13 @@ use Throwable;
 
 class Template
 {
+    private array $globalData = [];
     public function __construct(private string $viewsDir) {}
 
     public function renderView(string $viewPath, array $data = [])
     {
         $filePath = $this->getFilePath($viewPath);
+        extract($this->globalData, EXTR_OVERWRITE);
         extract($data, EXTR_OVERWRITE);
 
         if (!file_exists($filePath)) {
@@ -42,7 +44,7 @@ class Template
 
     public function resolve(string $viewPath, array $data)
     {
-
+        extract($this->globalData, EXTR_OVERWRITE);
         extract($data);
 
 
@@ -63,5 +65,10 @@ class Template
 
         $filePath = $this->viewsDir . "/$viewPath.php";
         return $filePath;
+    }
+
+    public function addGlobal(array $data)
+    {
+        $this->globalData = [...$this->globalData, ...$data];
     }
 }
