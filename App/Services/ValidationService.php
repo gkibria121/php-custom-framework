@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Library\Actions\ValidatorAction;
-use App\Rules\{EmailRule, InRule, MatchRule, MaxLengthRule,   MinRule, RequiredRule, URLRule};
+use App\Rules\{DateTimeRule, EmailRule, InRule, MatchRule, MaxLengthRule,   MinRule, NumericRule, RequiredRule, URLRule};
 
 
 class ValidationService
@@ -23,6 +23,8 @@ class ValidationService
         $this->validator->addRule('match', new MatchRule());
         $this->validator->addRule('url', new URLRule());
         $this->validator->addRule('maxLength', new MaxLengthRule());
+        $this->validator->addRule('numeric', new NumericRule());
+        $this->validator->addRule('datetime', new DateTimeRule());
     }
 
     public function registrationValidate(array $formData)
@@ -49,8 +51,8 @@ class ValidationService
     {
         $this->validator->validate($formData, [
             'description' => ['required', 'maxLength:255'],
-            // 'amount' => ['required', 'numaric'],
-            // 'date' => ['datetime:Y-m-d']
+            'amount' => ['required', 'numeric'],
+            'date' => ['datetime:Y-m-d']
 
         ]);
         dd($formData);
