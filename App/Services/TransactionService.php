@@ -20,8 +20,8 @@ class TransactionService
     public function addTransaction(array $formData)
     {
 
-        $this->db->query("INSERT INTO transactions(user_id,discription,amount,date) VALUES(:user_id,:discription,:amount,:date)", [
-            'discription' => $formData['description'],
+        $this->db->query("INSERT INTO transactions(user_id,description,amount,date) VALUES(:user_id,:description,:amount,:date)", [
+            'description' => $formData['description'],
             'amount' => $formData['amount'],
             'date' => $formData['date'],
             'user_id' => $_SESSION['user']
@@ -34,7 +34,7 @@ class TransactionService
 
 
 
-        $this->db->query("SELECT * FROM transactions WHERE user_id = :user_id AND   discription LIKE '%$queryString%' LIMIT $limit OFFSET $offset", [
+        $this->db->query("SELECT * FROM transactions WHERE user_id = :user_id AND   description LIKE '%$queryString%' LIMIT $limit OFFSET $offset", [
             'user_id' => $_SESSION['user'],
         ]);
         $transactions =  $this->db->fetchAll()->get();

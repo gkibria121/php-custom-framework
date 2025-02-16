@@ -48,7 +48,7 @@
             <?php foreach ($transactions as $transaction) : ?>
                 <tr>
                     <!-- Description -->
-                    <td class="p-4 text-sm text-gray-600"><?= $transaction['discription'] ?></td>
+                    <td class="p-4 text-sm text-gray-600"><?= $transaction['description'] ?></td>
                     <!-- Amount -->
                     <td class="p-4 text-sm text-gray-600"><?= $transaction['amount'] ?></td>
                     <!-- Receipt List -->
