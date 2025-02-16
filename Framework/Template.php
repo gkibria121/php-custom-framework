@@ -42,18 +42,12 @@ class Template
         }
     }
 
-    public function resolve(string $viewPath, array $data)
+    public function resolve(string $viewPath)
     {
-        extract($this->globalData, EXTR_OVERWRITE);
-        extract($data);
 
 
-        $filePath = $this->getFilePath($viewPath);
-        try {
-            include $filePath;
-        } catch (Exception $e) {
-            throw new Exception("Resource not found!");
-        }
+
+        return $this->getFilePath($viewPath);
     }
 
     private function getFilePath(string $viewPath): string
