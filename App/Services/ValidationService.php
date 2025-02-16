@@ -52,7 +52,7 @@ class ValidationService
         $this->validator->validate($formData, [
             'description' => ['required', 'maxLength:255'],
             'amount' => ['required', 'numeric'],
-            'date' => ['datetime:Y-m-d']
+            'date' => ['required', 'datetime:Y-m-d']
 
         ]);
     }

@@ -16,7 +16,9 @@ class DateTimeRule implements IRule
         if (empty($param[0])) {
             throw new InvalidArgumentException("Date format missing.");
         }
+        if (empty($data[$field])) return false;
         $dateTime = DateTime::createFromFormat($param[0], $data[$field]);
+
 
         return $dateTime->format($param[0]) === $data[$field];
     }
