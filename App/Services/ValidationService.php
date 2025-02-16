@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Library\Actions\ValidatorAction;
-use App\Rules\{EmailRule, InRule, MatchRule, MinRule, RequiredRule, URLRule};
+use App\Rules\{EmailRule, InRule, MatchRule, MaxLengthRule,   MinRule, RequiredRule, URLRule};
 
 
 class ValidationService
@@ -22,6 +22,7 @@ class ValidationService
         $this->validator->addRule('in', new InRule());
         $this->validator->addRule('match', new MatchRule());
         $this->validator->addRule('url', new URLRule());
+        $this->validator->addRule('maxLength', new MaxLengthRule());
     }
 
     public function registrationValidate(array $formData)
@@ -42,5 +43,16 @@ class ValidationService
             'password' => ['required'],
 
         ]);
+    }
+
+    public function transactionValidate(array $formData)
+    {
+        $this->validator->validate($formData, [
+            'description' => ['required', 'maxLength:255'],
+            // 'amount' => ['required', 'numaric'],
+            // 'date' => ['datetime:Y-m-d']
+
+        ]);
+        dd($formData);
     }
 }
