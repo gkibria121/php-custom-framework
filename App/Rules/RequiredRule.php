@@ -12,7 +12,7 @@ class RequiredRule implements IRule
     public function validate(string $field, array $data, array $param): bool
     {
 
-        return isset($data[$field]);
+        return !empty($data[$field]);
     }
 
     public function getMessage(string $field, array $data, array $param): string

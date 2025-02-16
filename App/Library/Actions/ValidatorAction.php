@@ -38,6 +38,7 @@ class ValidatorAction
                 $errors[$field][] = $rulesInstance->getMessage($field, $formData, explode(',', $param));
             }
         }
+
         if (count($errors)) {
             throw new ValidationException($errors, $formData);
         }
