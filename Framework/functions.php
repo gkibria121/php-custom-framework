@@ -65,3 +65,10 @@ function redirectTo(string $path)
     header("Location: $path");
     exit;
 }
+
+
+function env(string $key, string $default = null)
+{
+
+    return $_ENV[$key] ?? $default;
+}

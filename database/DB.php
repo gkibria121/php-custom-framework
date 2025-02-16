@@ -5,11 +5,10 @@ declare(strict_types=1);
 
 namespace Database;
 
-use Exception;
 use PDO;
 use PDOStatement;
 
-class Database
+class DB
 {
 
     public PDO $connection;
