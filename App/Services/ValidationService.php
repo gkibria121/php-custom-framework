@@ -55,6 +55,5 @@ class ValidationService
             'date' => ['datetime:Y-m-d']
 
         ]);
-        dd($formData);
     }
 }

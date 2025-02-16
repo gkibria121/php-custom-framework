@@ -55,15 +55,15 @@ class Container
         return new $className(...$dependencies);
     }
 
-    private function get(string $id, array $definations)
+    public function get(string $id)
     {
-        if (!array_key_exists($id, $definations)) {
+        if (!array_key_exists($id, $this->definations)) {
             throw new ContainerException("Cannot find defination for $id");
         }
         if (array_key_exists($id, $this->resolved)) {
             return $this->resolved[$id];
         }
-        $factory = $definations[$id]();
+        $factory = $this->definations[$id]($this);
         $this->resolved[$id] = $factory;
         return $factory;
     }
