@@ -35,4 +35,12 @@ class ValidationService
             'socialMediaUrl' => ['url']
         ]);
     }
+    public function loginValidate(array $formData)
+    {
+        $this->validator->validate($formData, [
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+
+        ]);
+    }
 }

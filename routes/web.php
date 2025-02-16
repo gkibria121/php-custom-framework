@@ -25,6 +25,7 @@ Route::group([
     Route::get('/', [DashboardController::class, 'index']);
     Route::get('/about', [HomeController::class, 'about']);
     Route::get('/register', [AuthController::class, 'registerView']);
-    Route::get('/login', [AuthController::class, 'loginView']);
     Route::post('/register', [AuthController::class, 'register']);
+    Route::get('/login', [AuthController::class, 'loginView']);
+    Route::post('/login', [AuthController::class, 'login']);
 });

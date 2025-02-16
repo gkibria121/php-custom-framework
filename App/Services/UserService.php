@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Exceptions\ValidationException;
 use Database\Database;
 
 class UserService
@@ -15,11 +16,22 @@ class UserService
 
     public function login(string $email, string $password)
     {
-        echo "$email $password";
+        $this->db->query("SELECT * FROM users WHERE email = :email", [
+            'email' => $email
+        ]);
+
+        $user = $this->db->fetch()->get();
+
+        if (!$user || !password_verify($password, $user['password'])) {
+            throw new ValidationException(['error' => ['Invalid credentials']]);
+        }
+
+        $_SESSION['user'] = $user['id'];
     }
     public function register(array $formData)
     {
-        $password = password_hash($formData['password'], PASSWORD_BCRYPT);
+        $password = password_hash($formData['password'], PASSWORD_BCRYPT, ['cost' => 12]);
+
         $this->db->query("INSERT INTO users(email,password, age, country, socialMediaURL) VALUES(:email,:password, :age, :country, :socialMediaURL)", [
             'email' => $formData['email'],
             'password' =>  $password,

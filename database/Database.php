@@ -13,6 +13,7 @@ class Database
 
     public PDO $connection;
     private PDOStatement $stmt;
+    private mixed $result;
     public function __construct(array $config, string $username, string $password, string $dirver = 'mysql')
     {
         $dsn = $dirver . ":" . http_build_query(data: $config, arg_separator: ';');
@@ -31,16 +32,20 @@ class Database
     }
     public function fetch()
     {
-        $this->stmt->fetch();
+        $this->result =  $this->stmt->fetch();
         return $this;
     }
     public function fetchAll()
     {
-        $this->stmt->fetchAll();
+        $this->result =   $this->stmt->fetchAll();
         return $this;
     }
     public function count()
     {
         return $this->stmt->rowCount();
+    }
+    public function get()
+    {
+        return $this->result;
     }
 }

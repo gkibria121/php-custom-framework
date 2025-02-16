@@ -32,4 +32,10 @@ class AuthController
     {
         echo $this->template->renderView("login", ['title' => "Login"]);
     }
+    public function login()
+    {
+        $this->validationService->loginValidate($_POST);
+        $this->userService->login($_POST['email'], $_POST['password']);
+        redirectTo("/");
+    }
 }
