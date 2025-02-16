@@ -34,6 +34,5 @@ class ValidationService
             'confirm_password' => ['required', 'match:password'],
             'socialMediaUrl' => ['url']
         ]);
-        redirectTo('/');
     }
 }

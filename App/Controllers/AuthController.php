@@ -8,13 +8,14 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Services\UserService;
 use App\Services\ValidationService;
 use Framework\Template;
 
 class AuthController
 {
 
-    public function __construct(private Template $template, private ValidationService $validationService) {}
+    public function __construct(private Template $template, private ValidationService $validationService, private UserService $userService) {}
 
     public function registerView()
     {
@@ -23,5 +24,7 @@ class AuthController
     public function register()
     {
         $this->validationService->registrationValidate($_POST);
+        $this->userService->register($_POST);
+        redirectTo('/');
     }
 }
