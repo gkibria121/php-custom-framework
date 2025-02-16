@@ -26,7 +26,15 @@ class UserService
             throw new ValidationException(['error' => ['Invalid credentials']]);
         }
 
+        session_regenerate_id();
+
         $_SESSION['user'] = $user['id'];
+    }
+    public function logout()
+    {
+
+        session_regenerate_id();
+        unset($_SESSION['user']);
     }
     public function register(array $formData)
     {

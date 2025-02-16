@@ -2,14 +2,16 @@
 
 declare(strict_types=1);
 
-use App\Controllers\AuthController;
-use App\Controllers\DashboardController;
-use App\Controllers\HomeController;
-use App\Middlewares\CSRFGuardMiddleware;
-use App\Middlewares\CSRFTokenMiddleware;
-use App\Middlewares\FlashMessageMiddleware;
-use App\Middlewares\SessionMiddleware;
-use App\Middlewares\ValidationExceptionMiddleware;
+use App\Controllers\{AuthController, DashboardController, HomeController};
+use App\Middlewares\{
+    AuthOnlyMiddleware,
+    CSRFGuardMiddleware,
+    CSRFTokenMiddleware,
+    FlashMessageMiddleware,
+    GuestOnlyMiddleware,
+    SessionMiddleware,
+    ValidationExceptionMiddleware
+};
 use Framework\Route;
 
 
@@ -21,11 +23,18 @@ Route::group([
     CSRFTokenMiddleware::class,
     CSRFGuardMiddleware::class,
 
+
 ], function () {
-    Route::get('/', [DashboardController::class, 'index']);
     Route::get('/about', [HomeController::class, 'about']);
-    Route::get('/register', [AuthController::class, 'registerView']);
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::get('/login', [AuthController::class, 'loginView']);
-    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::group([AuthOnlyMiddleware::class], function () {
+        Route::get('/', [DashboardController::class, 'index']);
+        Route::get('/logout', [AuthController::class, 'logout']);
+    });
+    Route::group([GuestOnlyMiddleware::class], function () {
+        Route::get('/register', [AuthController::class, 'registerView']);
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::get('/login', [AuthController::class, 'loginView']);
+        Route::post('/login', [AuthController::class, 'login']);
+    });
 });

@@ -21,7 +21,12 @@ class SessionMiddleware implements MiddlewareInterface
         if (headers_sent($filename, $line)) {
             throw new RuntimeException("Header is already sent. At File: $filename, Line : $line ");
         }
+        session_set_cookie_params([
+            "httpOnly" => true
+        ]);
         session_start();
+
+
         $next();
     }
 }

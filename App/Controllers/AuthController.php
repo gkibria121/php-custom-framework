@@ -38,4 +38,10 @@ class AuthController
         $this->userService->login($_POST['email'], $_POST['password']);
         redirectTo("/");
     }
+    public function logout()
+    {
+
+        $this->userService->logout();
+        redirectTo("/login");
+    }
 }
