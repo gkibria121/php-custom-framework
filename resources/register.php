@@ -10,6 +10,7 @@
             <input
                 type="email"
                 name="email"
+                value="<?= $oldData['email'] ?? '' ?>"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="john@example.com" />
             <?php if (array_key_exists('email', $errors)) : ?>
@@ -25,6 +26,7 @@
             <input
                 type="number"
                 name="age"
+                value="<?= $oldData['age'] ?? '' ?>"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="" />
             <?php if (array_key_exists('age', $errors)) : ?>
@@ -37,6 +39,7 @@
         <label class="block">
             <span class="text-gray-700">Country</span>
             <select
+                value="<?= $oldData['country'] ?? '' ?>"
                 name="country"
                 class="block w-full mt-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 <option value="USA">USA</option>
@@ -55,6 +58,7 @@
             <span class="text-gray-700">Social Media URL</span>
             <input
                 name="socialMediaUrl"
+                value="<?= $oldData['socialMediaUrl'] ?? '' ?>"
                 type="text"
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                 placeholder="" />

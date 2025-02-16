@@ -39,7 +39,7 @@ class ValidatorAction
             }
         }
         if (count($errors)) {
-            throw new ValidationException($errors);
+            throw new ValidationException($errors, $formData);
         }
     }
     public function addRule(string $name, IRule $rule)
