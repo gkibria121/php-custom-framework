@@ -48,4 +48,14 @@ class TransactionService
 
         return [$transactions, $total];
     }
+    public function getUserTransaction(int $id): array | bool
+    {
+
+
+        $this->db->query("SELECT * FROM transactions WHERE user_id = :user_id AND id = $id", [
+            'user_id' => $_SESSION['user'],
+        ]);
+
+        return $this->db->fetch()->get();
+    }
 }

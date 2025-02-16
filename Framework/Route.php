@@ -50,7 +50,8 @@ class Route
 
 
         $controllerInstance = $this->getInstance($container, $controllerClass);
-        $action = fn() =>  $controllerInstance->$controllerMethod();
+        $params = $this->getRouteParams($route, $url);
+        $action = fn() =>  $controllerInstance->$controllerMethod(...$params);
         $middlewares  = $route['middlewares'] ?? [];
 
 
@@ -61,7 +62,17 @@ class Route
         $actionWithMiddlewares = $this->applyMiddlewares($action, $middlewares, $container);
         $actionWithMiddlewares();
     }
+    private function getRouteParams(array $route, string $uri)
+    {
+        preg_match_all("#(?:{)([^\/]+)(?:})#", $route['path'], $kyes);
 
+        $regPath = $route['regPath'];
+        preg_match_all("#$regPath#", $uri, $values);
+        $params = array_combine($kyes[1], $values[1]);
+        if (count($params))
+            return $params;
+        return [];
+    }
     private function applyMiddlewares(callable $action, array $middlewares, Container  $container)
     {
 
@@ -83,22 +94,35 @@ class Route
     public function findRoute(string $uri, string $method): array|null
     {
         foreach (self::$routes as $route) {
-            if ($route['path'] === $uri && $route['method'] === $method) {
+            $regPath = $route["regPath"];
+            if (preg_match("#$regPath#", $uri) && $route['method'] === $method) {
+
                 return $route;
             }
         }
+
+
         return null;
     }
     public static function add(string $path, $method, array $controller)
     {
         $path = self::normalizeUri($path);
+        $regPath = self::getRegPath($path);
         self::$routes[] = [
             'path' => $path,
             'method' =>  $method,
             'controller' => $controller,
-            'middlewares' => self::$gropuMiddlewares
+            'middlewares' => self::$gropuMiddlewares,
+            "regPath" =>  $regPath
 
         ];
+    }
+    private static function getRegPath(string $path)
+    {
+
+        $path = preg_replace("#(?:{)([^\\\/]+)(?:})#", "([^\\\/]+)", $path);
+
+        return  "^$path$";
     }
     /**
      * @template T of object

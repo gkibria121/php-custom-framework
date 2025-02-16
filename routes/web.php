@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Controllers\{AuthController, DashboardController, HomeController, TransactionController};
+use App\Controllers\{AuthController,   HomeController, TransactionController};
 use App\Middlewares\{
     AuthOnlyMiddleware,
     CSRFGuardMiddleware,
@@ -28,10 +28,12 @@ Route::group([
     Route::get('/about', [HomeController::class, 'about']);
 
     Route::group([AuthOnlyMiddleware::class], function () {
-        Route::get('/', [DashboardController::class, 'index']);
+        Route::get('/', [TransactionController::class, 'index']);
+
         Route::get('/logout', [AuthController::class, 'logout']);
         Route::get('/transactions/create', [TransactionController::class, 'createView']);
         Route::post('/transactions/create', [TransactionController::class, 'create']);
+        Route::get('/transactions/{id}/edit', [TransactionController::class, 'editView']);
     });
     Route::group([GuestOnlyMiddleware::class], function () {
         Route::get('/register', [AuthController::class, 'registerView']);
