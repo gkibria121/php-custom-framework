@@ -28,4 +28,8 @@ class AuthController
         $this->userService->register($_POST);
         redirectTo('/');
     }
+    public function loginView()
+    {
+        echo $this->template->renderView("login", ['title' => "Login"]);
+    }
 }
