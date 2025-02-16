@@ -18,6 +18,7 @@ class CSRFGuardMiddleware implements MiddlewareInterface
         $methods = ["PUT", "POST", "DELETE"];
         if (!in_array($_SERVER["REQUEST_METHOD"], $methods)) {
             $next();
+            return;
         }
         $_csrf = $_POST['_csrf'] ?? '';
         $currentCsrf = $_SESSION['_csrf'];
