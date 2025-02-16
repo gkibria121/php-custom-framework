@@ -18,8 +18,22 @@ class DashboardController
 
     public function index()
     {
-        $transactions =  $this->transactionService->getTransactions();
+        $limit = 5;
+        $currentPage = (int)($_GET['p'] ?? 1);
 
-        echo $this->template->renderView("dashboard", ['title' => "Dashboard", "transactions" => $transactions]);
+        $description = addcslashes($_GET['s'] ?? '', "%_");
+        [$transactions, $total] =  $this->transactionService->getUserTransactions($currentPage, $limit, $description);
+        $totalPage = ceil($total / $limit);
+
+        $previousPage  = max($currentPage - 1, 1);
+        $nextPage   =  min($currentPage + 1, $totalPage);
+
+        echo $this->template->renderView("dashboard", [
+            'title' => "Dashboard",
+            "transactions" => $transactions,
+            'total' => $totalPage,
+            "previous" =>  $previousPage . "&s=$description",
+            "next" => $nextPage . "&s=$description",
+        ]);
     }
 }

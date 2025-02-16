@@ -27,12 +27,25 @@ class TransactionService
             'user_id' => $_SESSION['user']
         ]);
     }
-    public function getTransactions()
+    public function getUserTransactions(int $currentPage = 1, int $limit = 5, string $queryString = null): array
     {
+        $limit = $limit;
+        $offset = (($currentPage - 1) * $limit);
+
+
+
+        $this->db->query("SELECT * FROM transactions WHERE user_id = :user_id AND   discription LIKE '%$queryString%' LIMIT $limit OFFSET $offset", [
+            'user_id' => $_SESSION['user'],
+        ]);
+        $transactions =  $this->db->fetchAll()->get();
+
 
         $this->db->query("SELECT * FROM transactions WHERE user_id = :user_id", [
-            'user_id' => $_SESSION['user']
+            'user_id' => $_SESSION['user'],
         ]);
-        return $this->db->fetchAll()->get();
+        $total = $this->db->fetchAll()->count();
+
+
+        return [$transactions, $total];
     }
 }
