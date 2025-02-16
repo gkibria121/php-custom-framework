@@ -19,9 +19,10 @@ class UserService
     }
     public function register(array $formData)
     {
+        $password = password_hash($formData['password'], PASSWORD_BCRYPT);
         $this->db->query("INSERT INTO users(email,password, age, country, socialMediaURL) VALUES(:email,:password, :age, :country, :socialMediaURL)", [
             'email' => $formData['email'],
-            'password' => $formData['password'],
+            'password' =>  $password,
             'age' => $formData['age'],
             'country' => $formData['country'],
             'socialMediaURL' => $formData['socialMediaUrl'],
