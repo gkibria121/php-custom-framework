@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Database\DB;
+use Database\Database;
 
 include __DIR__ . "/database/Database.php";
 
@@ -17,6 +17,6 @@ $config = [
 ];
 
 
-$db = new DB($config, 'root', '');
+$db = new Database($config, 'root', '');
 $create_users = file_get_contents($databaseDir . '/create_users_table.sql');
 $db->query($create_users);

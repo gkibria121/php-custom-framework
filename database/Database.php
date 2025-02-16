@@ -8,7 +8,7 @@ namespace Database;
 use PDO;
 use PDOStatement;
 
-class DB
+class Database
 {
 
     public PDO $connection;
@@ -26,6 +26,21 @@ class DB
     public function query(string $queryString, array $placeholders = [])
     {
         $this->stmt =  $this->connection->prepare($queryString);
-        $this->stmt->execute($placeholders);
+
+        return  $this->stmt->execute($placeholders);
+    }
+    public function fetch()
+    {
+        $this->stmt->fetch();
+        return $this;
+    }
+    public function fetchAll()
+    {
+        $this->stmt->fetchAll();
+        return $this;
+    }
+    public function count()
+    {
+        return $this->stmt->rowCount();
     }
 }

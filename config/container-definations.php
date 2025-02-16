@@ -2,7 +2,7 @@
 
 use App\Services\UserService;
 use App\Services\ValidationService;
-use Database\DB;
+use Database\Database;
 use Framework\Paths;
 use Framework\Template;
 
@@ -20,6 +20,6 @@ return [
         $password =  env('DB_PASSWORD');
         $driver =  env('DB_DRIVER');
 
-        return    new UserService(new DB($config, $username, $password, $driver));
+        return    new UserService(new Database($config, $username, $password, $driver));
     }
 ];
