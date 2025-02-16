@@ -19,7 +19,12 @@ class TransactionService
 
     public function addTransaction(array $formData)
     {
-        echo "Adding transaction...";
-        dd($formData);
+
+        $this->db->query("INSERT INTO transactions(user_id,discription,amount,date) VALUES(:user_id,:discription,:amount,:date)", [
+            'discription' => $formData['description'],
+            'amount' => $formData['amount'],
+            'date' => $formData['date'],
+            'user_id' => $_SESSION['user']
+        ]);
     }
 }

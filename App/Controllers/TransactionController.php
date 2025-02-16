@@ -25,5 +25,6 @@ class TransactionController
     {
         $this->validationService->transactionValidate($_POST);
         $this->transactionService->addTransaction($_POST);
+        redirectTo("/");
     }
 }
