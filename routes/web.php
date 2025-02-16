@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
+use App\Controllers\HomeController;
 use App\Middlewares\CSRFGuardMiddleware;
 use App\Middlewares\CSRFTokenMiddleware;
 use App\Middlewares\FlashMessageMiddleware;
@@ -22,6 +23,7 @@ Route::group([
 
 ], function () {
     Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/about', [HomeController::class, 'about']);
     Route::get('/register', [AuthController::class, 'registerView']);
     Route::post('/register', [AuthController::class, 'register']);
 });

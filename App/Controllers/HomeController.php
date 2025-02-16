@@ -16,8 +16,8 @@ class HomeController
 
     public function __construct(private Template $template) {}
 
-    public function index()
+    public function about()
     {
-        echo $this->template->renderView('home', ['title' => "Title is<p> home</p>"]);
+        echo $this->template->renderView('about', ['title' => "About"]);
     }
 }
