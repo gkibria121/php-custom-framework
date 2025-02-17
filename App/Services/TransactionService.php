@@ -60,15 +60,19 @@ class TransactionService
     }
     public function updateUserTransaction(int $id, array $formData): array | bool
     {
-
-
-        $this->db->query("UPDATE  transactions SET  description = :description, amount = :amount , date = :date WHERE user_id = :user_id AND id = $id", [
+        return  $this->db->query("UPDATE  transactions SET  description = :description, amount = :amount , date = :date WHERE user_id = :user_id AND id = $id", [
             'description' => $formData['description'],
             'amount' => $formData['amount'],
             'date' => $formData['date'],
             'user_id' => $_SESSION['user'],
-        ]);
+        ]);;
+    }
+    public function deleteUserTransaction(int $id): bool
+    {
 
-        return $this->getUserTransaction($id);
+        return  $this->db->query("DELETE FROM  transactions WHERE user_id = :user_id AND id = $id", [
+
+            'user_id' => $_SESSION['user'],
+        ]);;
     }
 }

@@ -15,13 +15,15 @@ class FlashMessageMiddleware implements MiddlewareInterface
     public function process(callable $next)
     {
         $errors = $_SESSION["errors"] ?? [];
+        $error = $_SESSION["error"] ?? null;
         $oldData = $_SESSION["oldData"] ?? [];
         $success = $_SESSION["success"] ?? null;
 
-        $this->template->addGlobal(['errors' => $errors, 'oldData' => $oldData, 'success' => $success]);
+        $this->template->addGlobal(['errors' => $errors, 'error' => $error, 'oldData' => $oldData, 'success' => $success]);
         $next();
         unset($_SESSION['errors']);
         unset($_SESSION['oldData']);
         unset($_SESSION["success"]);
+        unset($_SESSION["error"]);
     }
 }

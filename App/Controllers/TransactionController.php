@@ -10,6 +10,7 @@ namespace App\Controllers;
 
 use App\Services\TransactionService;
 use App\Services\ValidationService;
+use Error;
 use Exception;
 use Framework\Template;
 
@@ -71,9 +72,21 @@ class TransactionController
 
 
         if (!$transaction) {
-            throw new Exception("Could not edit transaction $id");
+            $_SESSION['error'] = 'Something went wrong!.';
         }
         $_SESSION['success'] = 'Transaction updated successfully.';
+        back();
+    }
+    public function delete(string $id)
+    {
+
+
+        $isDeleted  =  $this->transactionService->deleteUserTransaction((int) $id, $_POST);
+        if (!$isDeleted) {
+            $_SESSION['error'] = 'Something went wrong!.';
+        }
+
+        $_SESSION['success'] = "Transaction deleted successfully.";
         back();
     }
 }
