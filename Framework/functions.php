@@ -76,3 +76,19 @@ function env(string $key, string $default = null)
 
     return $_ENV[$key] ?? $default;
 }
+
+
+function flattenArray($arr)
+{
+    $res = [];
+
+    foreach ($arr as $val) {
+        if (is_array($val)) {
+            $res = array_merge($res, flattenArray($val));
+        } else {
+            $res[] = $val;
+        }
+    }
+
+    return $res;
+}

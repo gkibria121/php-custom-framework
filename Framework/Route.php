@@ -62,13 +62,18 @@ class Route
         $actionWithMiddlewares = $this->applyMiddlewares($action, $middlewares, $container);
         $actionWithMiddlewares();
     }
+
+
     private function getRouteParams(array $route, string $uri)
     {
         preg_match_all("#(?:{)([^\/]+)(?:})#", $route['path'], $kyes);
 
         $regPath = $route['regPath'];
+
         preg_match_all("#$regPath#", $uri, $values);
-        $params = array_combine($kyes[1] ?? [], $values[1] ?? []);
+        array_shift($values);
+
+        $params = array_combine($kyes[1]  ?? [],  flattenArray($values)  ?? []);
         if (count($params))
             return $params;
         return [];

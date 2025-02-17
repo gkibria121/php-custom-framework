@@ -89,4 +89,10 @@ class TransactionController
         $_SESSION['success'] = "Transaction deleted successfully.";
         back();
     }
+    public function test(string $id, string $id2)
+    {
+
+
+        dd($id, $id2);
+    }
 }

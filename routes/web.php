@@ -36,6 +36,7 @@ Route::group([
         Route::get('/transactions/{id}/edit', [TransactionController::class, 'editView']);
         Route::put('/transactions/{id}/edit', [TransactionController::class, 'edit']);
         Route::delete('/transactions/{id}/delete', [TransactionController::class, 'delete']);
+        Route::get('/multi/{id}/param/{id2}', [TransactionController::class, 'delete']);
     });
     Route::group([GuestOnlyMiddleware::class], function () {
         Route::get('/register', [AuthController::class, 'registerView']);
