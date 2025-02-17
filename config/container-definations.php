@@ -1,5 +1,7 @@
 <?php
 
+use App\Library\Actions\FileManagerAction;
+use App\Services\ReceiptService;
 use App\Services\TransactionService;
 use App\Services\UserService;
 use App\Services\ValidationService;
@@ -15,6 +17,7 @@ return [
         $db = $container->get(Database::class);
         return    new UserService($db);
     },
+    FileManagerAction::class => fn() => new FileManagerAction(),
 
     Database::class => function () {
         $config = [
@@ -31,6 +34,11 @@ return [
     TransactionService::class =>  function (Container $container) {;
         $db = $container->get(Database::class);
         return    new TransactionService($db);
+    },
+    ReceiptService::class =>  function (Container $container) {;
+        $db = $container->get(Database::class);
+        $fileManagerAction = $container->get(FileManagerAction::class);
+        return    new ReceiptService($db, $fileManagerAction);
     },
 
 ];

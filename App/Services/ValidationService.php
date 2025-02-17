@@ -66,6 +66,5 @@ class ValidationService
         $this->validator->validate($formData, [
             'receipt' => ['required', 'image', 'maxSize:1'],
         ]);
-        dd($formData);
     }
 }

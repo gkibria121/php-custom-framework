@@ -34,10 +34,16 @@ class TransactionService
 
 
 
-        $this->db->query("SELECT * FROM transactions WHERE user_id = :user_id AND   description LIKE '%$queryString%' LIMIT $limit OFFSET $offset", [
+        $this->db->query("SELECT `transactions`.`id` as id ,
+        `transactions`.`description` as description ,
+        `transactions`.`amount` as amount,
+        `transactions`.`date` as date   
+        FROM transactions WHERE user_id = :user_id AND   description LIKE '%$queryString%' LIMIT $limit OFFSET $offset", [
             'user_id' => $_SESSION['user'],
         ]);
         $transactions =  $this->db->fetchAll()->get();
+
+        $transactionsWithReceipts = $this->getUserTransactionWithReceipts($transactions);
 
 
         $this->db->query("SELECT * FROM transactions WHERE user_id = :user_id", [
@@ -46,7 +52,7 @@ class TransactionService
         $total = $this->db->fetchAll()->count();
 
 
-        return [$transactions, $total];
+        return [$transactionsWithReceipts, $total];
     }
     public function getUserTransaction(int $id): array | bool
     {
@@ -74,5 +80,17 @@ class TransactionService
 
             'user_id' => $_SESSION['user'],
         ]);;
+    }
+
+    public function getUserTransactionWithReceipts(array $transactions)
+    {
+
+        return array_map(function ($transaction) {
+            $this->db->query("SELECT * FROM receipts  WHERE transaction_id = :transaction_id", [
+                'transaction_id' => $transaction['id']
+            ]);
+            $transaction['receipts'] = $this->db->fetchAll()->get();
+            return $transaction;
+        }, $transactions);
     }
 }
