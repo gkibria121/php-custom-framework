@@ -26,4 +26,22 @@ class ReceiptService
             'mimeType' => $mimeType,
         ]);
     }
+    public function getReceipt(string $transaction_id, string $receipt_id)
+    {
+        $this->db->query("SELECT * FROM receipts WHERE transaction_id = :transaction_id AND id = :id", [
+            'transaction_id' => $transaction_id,
+            'id' => $receipt_id
+        ]);
+        return $this->db->fetch()->get();
+    }
+    public function read(array $receipt)
+    {
+        $file = [
+            'name' => $receipt['name'],
+            'path' => Paths::$STORAGE_DIR . "/uploads/" . $receipt['path'],
+            'mimeType' => $receipt['mimeType'],
+        ];
+
+        $this->fileManagerAction->readFile($file);
+    }
 }

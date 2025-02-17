@@ -16,4 +16,19 @@ class FileManagerAction
         move_uploaded_file($file['tmp_name'], $filePath);
         return  "$fileName.$extension";
     }
+    public function readFile(array $file)
+    {
+        $type = $file['mimeType'];
+        header('Content-Description: File Transfer');
+        header("Content-Type: $type");
+        header('Content-Disposition: inline; filename="' . basename($file['name']) . '"');
+        header('Content-Length: ' . filesize($file['path']));
+
+        // Clear output buffer
+        ob_clean();
+        flush();
+
+        // Send the file
+        readfile($file['path']);
+    }
 }
