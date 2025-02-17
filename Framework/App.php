@@ -20,7 +20,7 @@ class App
     public function run()
     {
         $uri = $_SERVER["REQUEST_URI"];
-        $method = $_SERVER["REQUEST_METHOD"];
+        $method = $_POST['_method'] ?? $_SERVER["REQUEST_METHOD"];
         try {
             $this->router->dispatch($uri, $method, $this->container);
         } catch (RouteNotFound $e) {

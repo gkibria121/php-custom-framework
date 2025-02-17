@@ -1,7 +1,14 @@
 <?php include $this->resolve("partials/_header"); ?>
 
 <section class="max-w-2xl mx-auto mt-12 p-4 bg-white shadow-md border border-gray-200 rounded">
+    <?php if (isset($success)) : ?>
+        <div class="bg-gray-100 mt-2 p-2" style="color: green;margin-bottom: 1rem; text-align: center;">
+            <?php echo e($success); ?>
+        </div>
+    <?php endif; ?>
     <form method="POST" class="grid grid-cols-1 gap-6">
+
+        <input type="hidden" name="_method" value="PUT">
         <?php include $this->resolve("partials/_csrf"); ?>
         <label class="block">
             <span class="text-gray-700">Description</span>

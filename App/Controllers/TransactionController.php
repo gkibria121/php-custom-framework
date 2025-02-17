@@ -10,6 +10,7 @@ namespace App\Controllers;
 
 use App\Services\TransactionService;
 use App\Services\ValidationService;
+use Exception;
 use Framework\Template;
 
 class TransactionController
@@ -62,5 +63,17 @@ class TransactionController
             "transaction" => $transaction,
 
         ]);
+    }
+    public function edit(string $id)
+    {
+        $this->validationService->transactionValidate($_POST);
+        $transaction  =  $this->transactionService->updateUserTransaction((int) $id, $_POST);
+
+
+        if (!$transaction) {
+            throw new Exception("Could not edit transaction $id");
+        }
+        $_SESSION['success'] = 'Transaction updated successfully.';
+        back();
     }
 }

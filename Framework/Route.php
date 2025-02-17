@@ -139,6 +139,11 @@ class Route
         self::add($uri, "POST", $controller);
         return new static();
     }
+    public static function put(string $uri, array $controller)
+    {
+        self::add($uri, "PUT", $controller);
+        return new static();
+    }
     public static function addMiddlewares(string | array $middlewares)
     {
         $lastRoute = self::$routes[count(self::$routes) - 1];

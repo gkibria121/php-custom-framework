@@ -66,6 +66,10 @@ function redirectTo(string $path)
     exit;
 }
 
+function back()
+{
+    redirectTo($_SERVER["HTTP_REFERER"]);
+}
 
 function env(string $key, string $default = null)
 {

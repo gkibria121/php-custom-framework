@@ -58,4 +58,17 @@ class TransactionService
 
         return $this->db->fetch()->get();
     }
+    public function updateUserTransaction(int $id, array $formData): array | bool
+    {
+
+
+        $this->db->query("UPDATE  transactions SET  description = :description, amount = :amount , date = :date WHERE user_id = :user_id AND id = $id", [
+            'description' => $formData['description'],
+            'amount' => $formData['amount'],
+            'date' => $formData['date'],
+            'user_id' => $_SESSION['user'],
+        ]);
+
+        return $this->getUserTransaction($id);
+    }
 }
