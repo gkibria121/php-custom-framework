@@ -33,7 +33,9 @@ class TransactionController
         $currentPage = (int)($_GET['p'] ?? 1);
 
         $searchQueryString = addcslashes($_GET['s'] ?? '', "%_");
+
         [$transactions, $total] =  $this->transactionService->getUserTransactions($currentPage, $limit, $searchQueryString);
+
         $totalPages = ceil($total / $limit);
 
         $previousPage  = max($currentPage - 1, 1);

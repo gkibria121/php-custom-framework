@@ -68,7 +68,7 @@ class Route
 
         $regPath = $route['regPath'];
         preg_match_all("#$regPath#", $uri, $values);
-        $params = array_combine($kyes[1], $values[1]);
+        $params = array_combine($kyes[1] ?? [], $values[1] ?? []);
         if (count($params))
             return $params;
         return [];
