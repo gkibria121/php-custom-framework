@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Library\Actions\ValidatorAction;
-use App\Rules\{DateTimeRule, EmailRule, InRule, MatchRule, MaxLengthRule,   MinRule, NumericRule, RequiredRule, URLRule};
+use App\Rules\{DateTimeRule, EmailRule, FileRule, ImageRule, InRule, MatchRule, MaxLengthRule, MaxSizeRule, MinRule, NumericRule, RequiredRule, URLRule};
 
 
 class ValidationService
@@ -25,6 +25,9 @@ class ValidationService
         $this->validator->addRule('maxLength', new MaxLengthRule());
         $this->validator->addRule('numeric', new NumericRule());
         $this->validator->addRule('datetime', new DateTimeRule());
+        $this->validator->addRule('file', new FileRule());
+        $this->validator->addRule('image', new ImageRule());
+        $this->validator->addRule('maxSize', new MaxSizeRule());
     }
 
     public function registrationValidate(array $formData)
@@ -55,5 +58,14 @@ class ValidationService
             'date' => ['required', 'datetime:Y-m-d']
 
         ]);
+    }
+
+    public function   uploadReceiptValidate(array $formData)
+    {
+
+        $this->validator->validate($formData, [
+            'receipt' => ['required', 'image', 'maxSize:1'],
+        ]);
+        dd($formData);
     }
 }

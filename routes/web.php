@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Controllers\{AuthController,   HomeController, TransactionController};
+use App\Controllers\{AuthController,   HomeController, ReceiptController, TransactionController};
 use App\Middlewares\{
     AuthOnlyMiddleware,
     CSRFGuardMiddleware,
@@ -36,7 +36,8 @@ Route::group([
         Route::get('/transactions/{id}/edit', [TransactionController::class, 'editView']);
         Route::put('/transactions/{id}/edit', [TransactionController::class, 'edit']);
         Route::delete('/transactions/{id}/delete', [TransactionController::class, 'delete']);
-        Route::get('/multi/{id}/param/{id2}', [TransactionController::class, 'delete']);
+        Route::get('/transactions/{transaction_id}/receipt/upload', [ReceiptController::class, 'createView']);
+        Route::post('/transactions/{transaction_id}/receipt/upload', [ReceiptController::class, 'create']);
     });
     Route::group([GuestOnlyMiddleware::class], function () {
         Route::get('/register', [AuthController::class, 'registerView']);
