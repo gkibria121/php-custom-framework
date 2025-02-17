@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Library\Actions\ValidatorAction;
-use App\Rules\{DateTimeRule, EmailRule, FileRule, ImageRule, InRule, MatchRule, MaxLengthRule, MaxSizeRule, MinRule, NumericRule, RequiredRule, URLRule};
+use App\Rules\{DateTimeRule, EmailRule, FileRule, ImageOrPdfRule, ImageRule, InRule, MatchRule, MaxLengthRule, MaxSizeRule, MinRule, NumericRule, RequiredRule, URLRule};
 
 
 class ValidationService
@@ -27,6 +27,7 @@ class ValidationService
         $this->validator->addRule('datetime', new DateTimeRule());
         $this->validator->addRule('file', new FileRule());
         $this->validator->addRule('image', new ImageRule());
+        $this->validator->addRule('imageOrPdf', new ImageOrPdfRule());
         $this->validator->addRule('maxSize', new MaxSizeRule());
     }
 
@@ -64,7 +65,7 @@ class ValidationService
     {
 
         $this->validator->validate($formData, [
-            'receipt' => ['required', 'image', 'maxSize:1'],
+            'receipt' => ['required', 'imageOrPdf', 'maxSize:10'],
         ]);
     }
 }
