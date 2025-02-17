@@ -39,6 +39,7 @@ Route::group([
         Route::get('/transactions/{transaction_id}/receipt/upload', [ReceiptController::class, 'createView']);
         Route::post('/transactions/{transaction_id}/receipt/upload', [ReceiptController::class, 'create']);
         Route::get('/transactions/{transaction_id}/receipt/{receipt_id}', [ReceiptController::class, 'receiptView']);
+        Route::delete('/transactions/{transaction_id}/receipt/{receipt_id}', [ReceiptController::class, 'delete']);
     });
     Route::group([GuestOnlyMiddleware::class], function () {
         Route::get('/register', [AuthController::class, 'registerView']);

@@ -31,4 +31,8 @@ class FileManagerAction
         // Send the file
         readfile($file['path']);
     }
+    public function delete(array $file)
+    {
+        unlink($file['path']);
+    }
 }

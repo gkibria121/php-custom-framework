@@ -39,4 +39,9 @@ class ReceiptController
         }
         $this->receiptService->read($receipt);
     }
+    public function delete(string $transaction_id, string $receipt_id)
+    {
+        $this->receiptService->deleteReceipt($transaction_id, $receipt_id);
+        back();
+    }
 }

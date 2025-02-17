@@ -34,6 +34,24 @@ class ReceiptService
         ]);
         return $this->db->fetch()->get();
     }
+    public function deleteReceipt(string $transaction_id, string $receipt_id)
+    {
+        $receipt = $this->getReceipt($transaction_id,  $receipt_id);
+        if (!$receipt) {
+            notFound();
+        }
+        $this->db->query("DELETE   FROM receipts WHERE transaction_id = :transaction_id AND id = :id", [
+            'transaction_id' => $transaction_id,
+            'id' => $receipt_id
+        ]);
+
+        $file = [
+            'name' => $receipt['name'],
+            'path' => Paths::$STORAGE_DIR . "/uploads/" . $receipt['path'],
+            'mimeType' => $receipt['mimeType'],
+        ];
+        $this->fileManagerAction->delete($file);
+    }
     public function read(array $receipt)
     {
         $file = [
